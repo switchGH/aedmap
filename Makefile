@@ -1,0 +1,2 @@
+run:
+	gatsby develop
