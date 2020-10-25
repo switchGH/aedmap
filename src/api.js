@@ -10,11 +10,8 @@ const toJson = async res => {
 };
 
 export const getPlaces = async () => {
-    const resp = await fetch(
-        `https://script.google.com/macros/s/${GAS_ACCESS_URI}/exec`,
-        {
-            credentials: 'same-origin',
-        }
-    );
+    const resp = await fetch(`https://script.google.com/macros/s/${GAS_ACCESS_URI}/exec`, {
+        credentials: 'same-origin',
+    });
     return await toJson(resp);
 };
