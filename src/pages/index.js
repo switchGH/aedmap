@@ -37,7 +37,7 @@ class Home extends Component {
         return (
             <div style={{ height: '70vh', width: '70vh' }}>
                 <GoogleMap
-                    defaultZoom={10}
+                    defaultZoom={15}
                     defaultCenter={{ lat: 34.4111, lng: 135.3008 }} // 大阪市役所
                     onChildClick={this.onChildClickCallback}
                 >
