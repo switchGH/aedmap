@@ -5,7 +5,7 @@ const InfoWindow = props => {
     const { place } = props;
     const infoWindowStyle = {
       position: 'relative', 
-      bottom: 150,
+      bottom: 120,
         borderRadius: '10px',
         left: '-45px',
         width: 220,
