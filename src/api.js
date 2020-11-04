@@ -9,9 +9,18 @@ const toJson = async res => {
     }
 };
 
-export const getPlaces = async () => {
-    const resp = await fetch(`https://script.google.com/macros/s/${GAS_ACCESS_URI}/exec`, {
+// export const test = async () => {
+//     const resp = await fetch(`https://script.google.com/macros/s/${GAS_ACCESS_URI}/exec`, {
+//         credentials: 'same-origin',
+//     });
+//     return await toJson(resp);
+// };
+
+// 表示領域内の地点を取得する(領域内４点)
+export const getAllPlaces = async (params) => {
+    const usp = new URLSearchParams(params);
+    const resp = await fetch(`https://script.google.com/macros/s/${GAS_ACCESS_URI}/exec?${usp}`, {
         credentials: 'same-origin',
     });
     return await toJson(resp);
-};
+}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { getPlaces } from '../api';
+import { getAllPlaces } from '../api';
 import GoogleMap from '../components/GoogleMap';
 import Marker from '../components/Marker';
 
@@ -9,12 +9,19 @@ class Home extends Component {
         super(props);
 
         this.state = {
+            center: { lat: 34.4111, lng: 135.3008 },
             places: [],
         };
     }
 
     async componentDidMount() {
-        const data = await getPlaces().catch(e => {
+        const params = {
+            sw_lat: 34.4064388134989,
+            sw_lng: 135.295107346642,
+            ne_lat: 34.41583173345069,
+            ne_lng: 135.30649265335796
+        }
+        const data = await getAllPlaces(params).catch(e => {
             console.log(e);
         });
         data.forEach(place => {
@@ -31,15 +38,37 @@ class Home extends Component {
         });
     };
 
+    // 地図移動後の地点探索
+    onDragEnd = async(map) => {
+        //const latlng = map.getCenter(); // 表示領域の中心座標
+        const latlngBounds = map.getBounds(); //表示領域の座標
+        const swLatlng = latlngBounds.getSouthWest(); // 南西
+        const neLatlng = latlngBounds.getNorthEast(); // 北東
+        const params = {
+            sw_lat: swLatlng.lat(),
+            sw_lng: swLatlng.lng(),
+            ne_lat: neLatlng.lat(),
+            ne_lng: neLatlng.lng()
+        }
+        const data = await getAllPlaces(params).catch(e => {
+            console.log(e);
+        });
+        data.forEach(place => {
+            place.show = false;
+        });
+        this.setState({ places: data });
+    }
+
     render() {
-        const { places } = this.state;
+        const { places, center } = this.state;
 
         return (
             <div style={{ height: '70vh', width: '70vh' }}>
                 <GoogleMap
-                    defaultZoom={15}
-                    defaultCenter={{ lat: 34.4111, lng: 135.3008 }} // 大阪市役所
+                    defaultZoom={16}
+                    center={center} // 大阪市役所
                     onChildClick={this.onChildClickCallback}
+                    onDragEnd={this.onDragEnd}
                 >
                     {places.map(place => (
                         <Marker
